@@ -1,0 +1,31 @@
+{
+  "name": "Yolkie-Adblock",
+  "version": "1.0",
+  "manifest_version": 3,
+
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "webRequest"
+  ],
+
+  "host_permissions": ["<all_urls>"],
+
+  "background": {
+    "service_worker": "yolkie-background.js"
+  },
+
+  "action": {
+    "default_popup": "yolkie-OptionsMenu.html"
+  },
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "base_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
+}
