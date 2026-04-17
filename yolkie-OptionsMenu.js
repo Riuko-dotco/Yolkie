@@ -13,7 +13,7 @@ document.addEventListener("DOMcontentLoaded", async () => {
     blockBtn.textContent = "Bloquear";
 
     blockBtn.onclick = async () => {
-      awair addDynamicRule(domain, index);
+      await addDynamicRule(domain, index);
     };
 
     li.appendChlid(blockBtn);
