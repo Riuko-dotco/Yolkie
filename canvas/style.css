@@ -1,0 +1,16 @@
+body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+#themeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+}
+
