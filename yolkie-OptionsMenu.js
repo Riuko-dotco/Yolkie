@@ -50,3 +50,16 @@ async function addDynamicRule(domain, index) {
 
   location.reload();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("abrirBtn").addEventListener("click", abrirVentana);
+});
+
+function abrirVentana() {
+    chrome.windows.create({
+        url: "canvas/canvas.html",
+        type: "popup",
+        width: 1200,
+        height: 800
+    });
+}

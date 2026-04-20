@@ -1,35 +1,50 @@
+
 //Get the canvas element, context and debug mode
 let canvas = document.getElementById("canvas");
+if (!(canvas instanceof HTMLCanvasElement)) throw new Error("Canvas no encontrado");
 let context = canvas.getContext("2d");
+ 
 let toggle = document.getElementById("themeToggle")
 let ligthMode = false
 let pause = false
-
-
+// @ts-ignore
 canvas.style.background = "rgb(20, 20, 20)"
 
-toggle.addEventListener("click", () => {
-    ligthMode = !ligthMode
+if (toggle){
+    toggle.addEventListener("click", () => {
+        ligthMode = !ligthMode
 
-    if (ligthMode) {
-        canvas.style.background = "rgb(255, 255, 255)";
-        toggle.textContent = "🌙";
-        toggle.style.background = "white"
-        toggle.style.color = "rgb(215, 196, 196)"
-    }
+        if (ligthMode) {
+            // @ts-ignore
+            canvas.style.background = "rgb(255, 255, 255)";
+            // @ts-ignore
+            toggle.textContent = "🌙";
+            // @ts-ignore
+            toggle.style.background = "white"
+            // @ts-ignore
+            toggle.style.color = "rgb(215, 196, 196)"
+        }
 
-    if(!ligthMode) {
-        canvas.style.background = "rgb(20, 20, 20)"
-        toggle.textContent = "☀️";
-        toggle.style.background = "rgb(35, 34, 34)"
-        toggle.style.color = "rgb(20, 20, 20)"
-    }
-})
+        if(!ligthMode) {
+            // @ts-ignore
+            canvas.style.background = "rgb(20, 20, 20)"
+            // @ts-ignore
+            toggle.textContent = "☀️";
+            // @ts-ignore
+            toggle.style.background = "rgb(35, 34, 34)"
+            // @ts-ignore
+            toggle.style.color = "rgb(20, 20, 20)"
+        }
+    })
+}
 context.imageSmoothingEnabled = false;
+// @ts-ignore
 canvas.style.imageRendering = "pixelated";
 let debug = false; 
 
+// @ts-ignore
 context.webkitImageSmoothingEnabled = false;
+// @ts-ignore
 context.mozImageSmoothingEnabled = false;
 
 //const window area
@@ -37,10 +52,14 @@ const windowHeight = window.innerHeight;
 const windowWidth = window.innerWidth;
 
 let dpr = window.devicePixelRatio || 1;
+// @ts-ignore
 canvas.width = windowWidth * dpr;
+// @ts-ignore
 canvas.height = windowHeight * dpr;
 
+// @ts-ignore
 canvas.style.width = windowWidth + "px";
+// @ts-ignore
 canvas.style.height = windowHeight + "px";
 context.scale(dpr, dpr);
 
@@ -58,10 +77,12 @@ document.addEventListener("keydown", (e) => {
         canBeToggled = false;
     }
 
+    // @ts-ignore
     keys[e.code] = true;
 });
 
 document.addEventListener("keyup", (e) => {
+    // @ts-ignore
     keys[e.code] = false;
 
     if (e.code === "Escape") {
@@ -74,6 +95,7 @@ class Points {
         this.value = 0;
     }
 
+    // @ts-ignore
     draw(context) {
         context.font = "30px Minecraft";
         if (ligthMode){
@@ -88,24 +110,26 @@ class Points {
 let points = new Points();
 
 class background {
+    // @ts-ignore
     constructor(sprite1, sprite2, y, x) {
         this.sprite1 = new Image();
-        this.sprite1.src = sprite1;
+        this.sprite1.src = chrome.runtime.getURL(sprite1);
 
         this.sprite2 = new Image();
-        this.sprite2.src = sprite2;
-
-        this.spriteWidth = this.sprite1.naturalWidth;
-        this.spriteHeight = this.sprite1.naturalHeight; 
+        this.sprite2.src = chrome.runtime.getURL(sprite2);
 
         this.loaded = false;
 
         this.sprite1.onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.sprite1.naturalWidth;
+            this.spriteHeight = this.sprite1.naturalHeight; 
         }
 
         this.sprite2.onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.sprite2.naturalWidth;
+            this.spriteHeight = this.sprite2.naturalHeight; 
         }
 
         this.x = x;
@@ -114,6 +138,7 @@ class background {
         this.dx = this.speed;
     }
 
+    // @ts-ignore
     draw(context) {
         let scale = 1.25;
 
@@ -146,12 +171,10 @@ class background {
 }
 //class ground
 class Ground {
+    // @ts-ignore
     constructor(image, y) {
         this.image = new Image();
-        this.image.src = image;
-
-        this.spriteWidth = this.image.naturalWidth;
-        this.spriteHeight = this.image.naturalHeight;   
+        this.image.src = chrome.runtime.getURL(image);
 
         this.spritey = y - 80;
         this.y = y;
@@ -164,9 +187,13 @@ class Ground {
         this.loaded = false;
         this.image.onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.image.naturalWidth;
+            this.spriteHeight = this.image.naturalHeight; 
+
         }
     }
 
+    // @ts-ignore
     draw(context) {
         if (!this.loaded) return;
 
@@ -199,21 +226,28 @@ class Ground {
 }
 
 class Player {
+    // @ts-ignore
     constructor(image1, image2, x, y, width, height) {
         //Image loading
         this.images = [
             new Image(),
             new Image()
         ];
-        this.images[0].src = image1;
-        this.images[1].src = image2;
+        this.images[0].src = chrome.runtime.getURL(image1);
+        this.images[1].src = chrome.runtime.getURL(image2);
         
         this.loaded = false;
         this.images[0].onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.images[0].naturalWidth;
+            this.spriteHeight = this.images[0].naturalHeight; 
+
         }
         this.images[1].onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.images[1].naturalWidth;
+            this.spriteHeight = this.images[1].naturalHeight; 
+
         }
         this.images[0].onerror = () => {
             console.error("Failed to load image: " + image1);
@@ -241,11 +275,12 @@ class Player {
 
         this.currentFrame = 0;
         this.frameCounter = 0;
-        this.frameDelay = 10; 
+        this.frameDelay = 6; 
     }   
   
+    // @ts-ignore
     draw(context) {
-        let scale = 1;
+        let scale = 1.25//sobre escalado del sprite de yolkie;
         let drawx = Math.floor(this.x * dpr) / dpr; 
         let drawy = Math.floor(this.y * dpr) / dpr;
         let drawwidth = Math.floor(this.spriteWidth * scale);
@@ -281,6 +316,7 @@ class Player {
         this.y += this.dy;
     
 
+        // @ts-ignore
         if ((keys["Space"] || keys["ArrowUp"]) && this.onGround) {
             this.dy += -15;
             this.y += this.dy;
@@ -297,12 +333,16 @@ class Player {
 }
 
 class Obstacle {
+    // @ts-ignore
     constructor(type, x, y, width, height, imagePath) { 
         this.image = new Image();
-        this.image.src = imagePath;
+        this.image.src = chrome.runtime.getURL(imagePath);
         this.loaded = false;
         this.image.onload = () => {
             this.loaded = true;
+            this.spriteWidth = this.image.naturalWidth;
+            this.spriteHeight = this.image.naturalHeight; 
+
         }
         this.image.onerror = () => {
             console.error("Failed to load image: " + imagePath);
@@ -318,6 +358,7 @@ class Obstacle {
         this.height = height;
     }
 
+    // @ts-ignore
     draw(context) {
         if (this.loaded) {
             context.drawImage(this.image, this.x - 10, this.spritey, this.spriteWidth, this.spriteHeight);
@@ -329,10 +370,12 @@ class Obstacle {
 
     update() {
         this.x -= 5;
+        // @ts-ignore
         allObstacles = allObstacles.filter(o => o.x > -o.width);
     }
 }
 
+// @ts-ignore
 let allObstacles = [];
 let minGap = 250;
 let maxGap = 450;
@@ -341,12 +384,14 @@ let maxGap = 450;
 
 function getLastObstacleX() {
     let max = -Infinity;
+    // @ts-ignore
     allObstacles.forEach(o => {
         if (o.x > max) max = o.x;
     });
     return max;
 }
 
+// @ts-ignore
 function PlayerRectCollision(player, rect) {
     let pad = 2
     return (
@@ -366,30 +411,30 @@ function resetGame() {
 function pauseGame() {
     allObstacles = [];
 }
-let Background = new background("Cloud1.png", "Cloud2.png", 100, 100);
+let Background = new background("canvas/resources/Cloud1.png", "canvas/resources/Cloud2.png", 100, 100);
 
-let ground = new Ground("Ground.gif", 0.75 * windowHeight);
+let ground = new Ground("canvas/resources/Ground.gif", 0.75 * windowHeight);
 
-let player = new Player("Yolkie1.png", "Yolkie2.png" , 100, 100, 30, 50);
+let player = new Player("canvas/resources/Yolkie1.png", "canvas/resources/Yolkie2.png" , 100, 100, 30, 50);
 
 let obstacleShapes = [
     {
         type : "singleCactus",
         width: 20,
         height: 40,
-        skin: "singleCactusSkin.jpg",
+        skin: "canvas/resources/singleCactusSkin.jpg",
     },
     {
         type : "twoCactus",
         width: 40,
         height: 40,
-        skin: "doubleCactusSkin.png",
+        skin: "canvas/resources/doubleCactusSkin.png",
     },
     {
         type : "tripleCactus",
         width: 60,
         height: 40,
-        skin: "tripleCactusSkin.webp",
+        skin: "canvas/resources/tripleCactusSkin.webp",
     }
 ];
 
@@ -408,12 +453,14 @@ function spawnObstacles() {
     );
 }
 
+// @ts-ignore
 canvas.addEventListener("click", () => {
     if (player.onGround && !pause) {
         player.dy = -15;
     }
 });
 function gameLoop() {
+    // @ts-ignore
     context.clearRect(0, 0, windowWidth, windowHeight);
     requestAnimationFrame(gameLoop);
 
@@ -430,6 +477,7 @@ function gameLoop() {
                 spawnObstacles();
             }
 
+            // @ts-ignore
             allObstacles.forEach(obstacle => {
                 obstacle.update();
 
@@ -441,23 +489,29 @@ function gameLoop() {
         }
     }
 
-    // 🔹 SIEMPRE dibujar
     Background.draw(context);
     ground.draw(context);
     player.draw(context);
+    // @ts-ignore
     allObstacles.forEach(o => o.draw(context));
     points.draw(context);
 
-    // 🔹 overlay de pausa
     if (pause) {
+        // @ts-ignore
         context.fillStyle = "rgba(0,0,0,0.4)";
+        // @ts-ignore
         context.fillRect(0, 0, windowWidth, windowHeight);
 
+        // @ts-ignore
         context.fillStyle = "white";
+        // @ts-ignore
         context.font = "40px Minecraft";
+        // @ts-ignore
         context.fillText("PAUSED", windowWidth / 2 - 80, windowHeight / 2);
     }
 }
 
 gameLoop();
 
+console.log(canvas, context);
+console.log(chrome.runtime.getURL("resources/Cloud1.png"));

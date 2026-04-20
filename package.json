@@ -1,0 +1,24 @@
+{
+  "name": "yolkie",
+  "version": "1.0.0",
+  "description": "",
+  "main": "yolkie-background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Riuko-dotco/Yolkie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Riuko-dotco/Yolkie/issues"
+  },
+  "homepage": "https://github.com/Riuko-dotco/Yolkie#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.1.40"
+  }
+}
