@@ -4,11 +4,9 @@ document.addEventListener("DOMcontentLoaded", async () => {
   const list = data.suspiciusUrls || [];
 
   const ul = document.getElementById("list");
-
   list.forEach((domain, index) => {
     const li = document.createElement("li");
     li.textContent = domain;
-
     const blockBtn = document.createElement("button");
     blockBtn.textContent = "Bloquear";
 

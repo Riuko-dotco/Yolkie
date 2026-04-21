@@ -75,7 +75,7 @@ document.addEventListener("keydown", (e) => {
     if (e.code === "Escape" && canBeToggled) {
         pause = !pause;
         canBeToggled = false;
-    }
+    }   
 
     // @ts-ignore
     keys[e.code] = true;
@@ -261,6 +261,11 @@ class Player {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.health = 3;
+        this.dead = false;
+        this.isInvincible = false;
+        this.invincibilityTimer = 0;
+        this.blinkCounter = 0;
 
         //Sprite
         this.spriteWidth = this.images[0].naturalWidth;
@@ -288,6 +293,17 @@ class Player {
         let image = this.images[this.currentFrame];
 
         if (this.loaded) {
+             if (this.isInvincible) {
+                this.blinkCounter++;
+                // Si el contador es par, no dibujamos (crea el efecto de parpadeo)
+                // Puedes cambiar el '4' por un número más alto para un parpadeo más lento
+                if (Math.floor(this.blinkCounter / 4) % 2 === 0) {
+                    return; 
+                }
+            } else {
+                this.blinkCounter = 0; // Resetear cuando no es invencible
+            }
+        
             context.drawImage(
                 image, 
                 drawx, 
@@ -295,7 +311,8 @@ class Player {
                 drawwidth, 
                 drawheight);
         }
-        
+
+      
         if (debug) {
         context.beginPath();
         context.rect(this.x, this.y, this.width, this.height);
@@ -312,6 +329,14 @@ class Player {
                 this.frameCounter = 0;
             }
         }
+        if (this.isInvincible) {
+            this.invincibilityTimer--;
+            if (this.invincibilityTimer <= 0) {
+                this.isInvincible = false;
+                this.blinkCounter = 0;
+            }
+        }
+
         this.dy += this.gravity;
         this.y += this.dy;
     
@@ -375,7 +400,7 @@ class Obstacle {
     }
 }
 
-// @ts-ignore
+/** @type {Obstacle[]} */
 let allObstacles = [];
 let minGap = 250;
 let maxGap = 450;
@@ -403,6 +428,9 @@ function PlayerRectCollision(player, rect) {
 } 
 
 function resetGame() {
+    player.health = 3;
+    player.dead = false;
+    pause = false;
     points.value = 0;
     allObstacles = [];
     spawnObstacles();
@@ -459,8 +487,11 @@ canvas.addEventListener("click", () => {
         player.dy = -15;
     }
 });
+
+
 function gameLoop() {
     // @ts-ignore
+    let coins = 0
     context.clearRect(0, 0, windowWidth, windowHeight);
     requestAnimationFrame(gameLoop);
 
@@ -476,14 +507,19 @@ function gameLoop() {
             if (allObstacles.length < 5) {
                 spawnObstacles();
             }
-
+        
             // @ts-ignore
             allObstacles.forEach(obstacle => {
                 obstacle.update();
 
-                if (PlayerRectCollision(player, obstacle)) {
-                    alert("Game Over! Your score was: " + Math.floor(points.value));
-                    resetGame();
+                if (PlayerRectCollision(player, obstacle) && !player.isInvincible) {
+                    player.health -= 1;
+                    player.isInvincible = true;
+                    player.invincibilityTimer = 60;
+                        if (player.health <= 0) {
+                            player.dead = true;
+                            pause = true;
+                    } 
                 }
             });
         }
@@ -496,7 +532,7 @@ function gameLoop() {
     allObstacles.forEach(o => o.draw(context));
     points.draw(context);
 
-    if (pause) {
+    if (pause && !player.dead) {
         // @ts-ignore
         context.fillStyle = "rgba(0,0,0,0.4)";
         // @ts-ignore
@@ -509,9 +545,25 @@ function gameLoop() {
         // @ts-ignore
         context.fillText("PAUSED", windowWidth / 2 - 80, windowHeight / 2);
     }
+
+    if (pause && player.dead){
+          // @ts-ignore
+        context.fillStyle = "rgba(0,0,0,0.4)";
+        // @ts-ignore
+        context.fillRect(0, 0, windowWidth, windowHeight);
+
+        // @ts-ignore
+        context.fillStyle = "white";
+        // @ts-ignore
+        context.font = "40px Minecraft";
+        // @ts-ignore
+        context.fillText("YOU HAVE DIED", windowWidth / 2 - 80, windowHeight / 2);
+        context.fillText("R to retry", windowWidth / 2 - 60, ((windowHeight / 2)+100));
+
+        if (player.dead && keys["KeyR"]) {
+            resetGame();
+        }
+    }
 }
 
 gameLoop();
-
-console.log(canvas, context);
-console.log(chrome.runtime.getURL("resources/Cloud1.png"));
