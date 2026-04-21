@@ -1,0 +1,17 @@
+* {
+   background-color: chocolate; 
+}
+
+.contenedor {
+  display: flex;            /* Activa el modo Flexbox */
+  justify-content: center;   /* Centra horizontalmente */
+  align-items: center;       /* Centra verticalmente */
+  
+  height: 100vh;            /* Altura de toda la pantalla (opcional) */
+  border: 1px solid #ccc;    /* Solo para visualizar el área */
+}
+
+img {
+  max-width: 100%;           /* Asegura que sea responsiva */
+  height: auto;
+}
