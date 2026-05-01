@@ -1,17 +1,38 @@
-* {
-   background-color: chocolate; 
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.background {
+  height: 100vh;            /* Altura de toda la pantalla (opcional) */
+  background-color: #ff0000;
 }
 
 .contenedor {
   display: flex;            /* Activa el modo Flexbox */
   justify-content: center;   /* Centra horizontalmente */
-  align-items: center;       /* Centra verticalmente */
-  
-  height: 100vh;            /* Altura de toda la pantalla (opcional) */
-  border: 1px solid #ccc;    /* Solo para visualizar el área */
+  align-items: center;
+  border: 1px solid #ff000000;   /* Centra verticalmente */
 }
 
 img {
   max-width: 100%;           /* Asegura que sea responsiva */
   height: auto;
 }
+
+.toggle {
+  width: 100px;
+  height: 10%;
+  align-self:flex-start;
+  
+  border-radius: 10px;
+  background-color: #6d6a6a;
+  border: 1px solid #9d7a7a;
+}
+
+.toggle:hover{
+  background-color: #9d7a7a;
+}
+
+
