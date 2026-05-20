@@ -1,4 +1,3 @@
-// @ts-nocheck
 document.addEventListener("DOMcontentLoaded", async () => {
 
     const data = await chrome.storage.local.get(["suspiciousUrls"]);
