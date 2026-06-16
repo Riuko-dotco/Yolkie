@@ -4,7 +4,6 @@ document.addEventListener("DOMcontentLoaded", async () => {
     const list = data.suspiciousUrls || [];
 
     const ul = document.getElementById("list");
-    // @ts-ignore
     list.forEach((domain, index) => {
         const li = document.createElement("li");
         li.textContent = domain;

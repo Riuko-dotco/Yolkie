@@ -1,14 +1,14 @@
 //-----------------------------------------------------------------------------------------------
-// yolkie Adblock - Free & Open code from devs: Juan Carlos Alejo, Juan felipe Bernal, Juan Pablo Bernal
+// Yolkie Adblock - Free & Open code from dev: Juan Carlos Alejo
 //-----------------------------------------------------------------------------------------------
 
 
-//Inialazing local chrome storage
+//Initializing local chrome storage
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         suspiciousUrls: [],
         whitelist: []
-    });
+    })
 });
 
 chrome.webRequest.onBeforeRequest.addListener(

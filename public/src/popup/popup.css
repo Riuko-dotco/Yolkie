@@ -9,7 +9,7 @@ body {
     background-color: #ff0000;
 }
 
-.contenedor {
+.container {
     display: flex;            /* Activa el modo Flexbox */
     justify-content: center;   /* Centra horizontalmente */
     align-items: center;
@@ -21,6 +21,11 @@ img {
     height: auto;
 }
 
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .toggle {
     width: 100px;
     height: 10%;
