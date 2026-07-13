@@ -15,10 +15,10 @@ setupThemeToggle();
 
 
 const background = new Background(100, 0);
-await background.init("public/src/games/dino-yolk/resources/background/Cloud1.png", "public/src/games/dino-yolk/resources/background/Cloud2.png")
+await background.init("src/games/dino-yolk/resources/background/Cloud1.png", "src/games/dino-yolk/resources/background/Cloud2.png")
 
 const ground = new Ground(0.75 * gameScreen.height);
-await ground.init("public/src/games/dino-yolk/resources/foreground/ground.gif",)
+await ground.init("src/games/dino-yolk/resources/foreground/ground.gif",)
 
 applyCanvasSize(); //aplicar al inicio
 
@@ -32,7 +32,7 @@ const player = new Player(
 );
 
 await player.init(
-    "public/src/games/dino-yolk/resources/yolkie/Yolkie1.png", "public/src/games/dino-yolk/resources/yolkie/Yolkie2.png"
+    "src/games/dino-yolk/resources/yolkie/Yolkie1.png", "src/games/dino-yolk/resources/yolkie/Yolkie2.png"
 )
 
 const points = new Points();

@@ -5,8 +5,7 @@ import type { Points } from "../models/Points.js";
 import type { Obstacle } from "../models/Obstacles.js";
 import { context, gameScreen } from "./config.js";
 import { pause, setPaused } from "./config.js";
-import { setObstaclesToEmpty } from "../simulations/obstacleSpawner.js";
-import { allObstacles, spawnObstacle} from "../simulations/obstacleSpawner.js";
+import { allObstacleFilter, setObstaclesToEmpty, allObstacles, spawnObstacle } from "../simulations/obstacleSpawner.js";
 import { playerRectCollision} from "./collision.js";
 import { keys } from "./input.js";
 
@@ -49,15 +48,17 @@ export function startGameLoop( player: Player, ground: Ground, background: Backg
                     obstacle.update();
 
                     if (playerRectCollision(player, obstacle) && !player.isInvincible) {
-                        player.health -= 1
+                        player.health--;
                         player.isInvincible = true;
                         player.invincibilityTimer = 60;
+
                         if (player.health <= 0) {
                             player.dead = true;
                             setPaused(true);
                         }
                     }
                 });
+                allObstacleFilter();
             }
         }
 
@@ -83,8 +84,8 @@ export function startGameLoop( player: Player, ground: Ground, background: Backg
 
             context.fillStyle = "white";
             context.font = "40px Minecraft";
-            context.fillText("YOU HAVE DIED", gameScreen.width / 2 - 80, gameScreen.height / 2);
-            context.fillText("R to retry", gameScreen.width / 2 - 60, ((gameScreen.height / 2)+100));
+            context.fillText("YOU HAVE DIED", gameScreen.width / 2, gameScreen.height / 2);
+            context.fillText("R to retry", gameScreen.width / 2, ((gameScreen.height / 2)+100));
 
             if (keys.KeyR) {
                 resetGame();

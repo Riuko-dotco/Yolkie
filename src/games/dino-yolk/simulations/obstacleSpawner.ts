@@ -46,18 +46,18 @@ const obstacleShapes = [
         type : "singleCactus",
         width: 20,
         height: 40,
-        skin: "public/src/games/dino-yolk/resources/enemies/singleCactusSkin.jpg",
+        skin: "src/games/dino-yolk/resources/enemies/singleCactusSkin.jpg",
     },
     {
         type : "twoCactus",
         width: 40,
         height: 40,
-        skin: "public/src/games/dino-yolk/resources/enemies/doubleCactusSkin.png",
+        skin: "src/games/dino-yolk/resources/enemies/doubleCactusSkin.png",
     },
     {
         type : "tripleCactus",
         width: 60,
         height: 40,
-        skin: "public/src/games/dino-yolk/resources/enemies/tripleCactusSkin.webp",
+        skin: "src/games/dino-yolk/resources/enemies/tripleCactusSkin.webp",
     }
 ];

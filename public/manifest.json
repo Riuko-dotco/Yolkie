@@ -15,19 +15,19 @@
   ],
 
   "background": {
-    "service_worker": "public/src/background/index.js",
+    "service_worker": "src/background/index.js",
     "type": "module"
   },
 
   "action": {
-    "default_popup": "public/src/background/yolkie-OptionsMenu.html"
+    "default_popup": "src/background/yolkie-OptionsMenu.html"
   },
 
   "web_accessible_resources": [
     {
       "resources": [
-        "public/src/games/dino-yolk/resources/*",
-        "public/src/games/dino-yolk/resources/**/*"
+        "src/games/dino-yolk/resources/*",
+        "src/games/dino-yolk/resources/**/*"
       ],
       "matches": [
         "<all_urls>"
@@ -36,10 +36,10 @@
   ],
 
   "icons": {
-    "16": "public/icons/icon16.png",
-    "32": "public/icons/icon32.png",
-    "48": "public/icons/icon48.png",
-    "128": "public/icons/icon128.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
 
   "declarative_net_request": {
@@ -47,7 +47,7 @@
       {
         "id": "base_rules",
         "enabled": true,
-        "path": "public/rules/adblock-rules.json"
+        "path": "rules/adblock-rules.json"
       }
     ]
   }
