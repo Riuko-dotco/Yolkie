@@ -1,43 +1,270 @@
+@font-face {
+    font-family: "Minecraft";
+    src: url(/public/fonts/Minecraft.woff2);
+}
+
+
 body {
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    font-family: "Minecraft", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.background {
-    height: 100vh;            /* Altura de toda la pantalla (opcional) */
-    background-color: #ff0000;
+.app{
+    display: grid;
+    width: 100%;
+    height: 100vh;
+
+    grid-template-areas: 
+
+    "header header ."
+    "ladoIzquierdo main ladoDerecho"
+    "nav nav nav";
+    
+    background-color: #09a;
+    background-image: url(background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+
+    grid-template-rows: minmax(50px, 100px) minmax(150px, 1fr);
+    grid-template-columns: minmax(100px, 1fr) 3fr minmax(100px, 1fr);
+}
+.header{
+    grid-area: header;
 }
 
-.container {
-    display: flex;            /* Activa el modo Flexbox */
-    justify-content: center;   /* Centra horizontalmente */
-    align-items: center;
-    border: 1px solid #ff000000;   /* Centra verticalmente */
+.ladoDerecho{
+    display: grid;
+    grid-area: ladoDerecho;
 }
 
-img {
-    max-width: 100%;           /* Asegura que sea responsiva */
-    height: auto;
+.ladoIzquierdo{
+    display: grid;
+    grid-area: ladoIzquierdo;
 }
 
 .main{
+    grid-area: main;
+    display: grid;
+}
+
+.nav {
+    grid-area: nav;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    margin: 10px;
+}
+
+#yolkie {
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    height: 7fr;
+    width: auto;
+}
+
+.moveScreen{
+    display: flex;
+    cursor: pointer;
+    border: 4px solid black;
+    background-color: gray;
+    padding-bottom: 10px;
+    user-select: none;
+    width: 5em;
+    height: 30%;
+    place-self: center;
+    transition: 0.1s ease-in-out;
+    position: sticky;
+}
+
+.moveButton{
+    width: 5.7em;
+    cursor: pointer;
+    background-color: #dddddd;
+    border: 4px solid #fff;
+}
+
+#leftMoveScreen:active,
+#leftMoveScreen.pressed{
+    padding: 0;
+    transform: translateX(10px);
+}
+
+#rigthMoveScreen:active,
+#rigthMoveScreen.pressed{
+    padding: 0;
+    transform: translateX(-10px);
+}
+
+#optionsWrapper:active{
+    padding: 0;
+    transform: translateY(10px);
+}
+
+#leftButton{
+    margin-right: 10px;
+}
+
+#rightButton{
+    margin-left: 10px;
+}
+
+.arrow{
+    width: 70%;
+    transition: transform 0.1s ease-in-out;
+}
+
+.moveButton:active .arrow,
+.moveButton.pressed .arrow{
+    transform: scale(0.95);
+}
+
+#optionsToggle{
+    position: relative;
+    height: 40px;
+    width: 40px;
+}
+
+#optionsWrapper {
+    margin: 10px;
+    position: absolute;
+    right: 0;
+    height: 40px;
+    width: 40px;
+
+}
+
+.hidden {
+    display: flex;
+
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.hidden.show{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#optionsMenu{
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    background-color: #dddddd;
+    right: 0;
+    align-items: center;
+    margin: 10px;
+    margin-right: 55px;
+    height: 150px;
+    width: 100px;
+    z-index: 100;
+    border: 4px solid black;
+}
+/* From Uiverse.io by andrew-demchenk0 */ 
+.switch {
+    --input-focus: #2d8cf0;
+    --font-color: #323232;
+    --font-color-sub: #666;
+    --bg-color: #fff;
+    --bg-color-alt: #666;
+    --main-color: #323232;
+    position: relative;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 35px;
+    width: 50px;
+    height: 20px;
 }
+
 .toggle {
-    width: 100px;
-    height: 10%;
-    align-self:flex-start;
-
-    border-radius: 10px;
-    background-color: #6d6a6a;
-    border: 1px solid #9d7a7a;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-.toggle:hover{
-    background-color: #9d7a7a;
+.slider {
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    box-shadow: 4px 4px var(--main-color);
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-colorcolor);
+    transition: 0.3s;
 }
 
+.slider:before {
+    box-sizing: border-box;
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+    left: -2px;
+    bottom: 2px;
+    background-color: var(--bg-color);
+    box-shadow: 0 3px 0 var(--main-color);
+    transition: 0.3s;
+}
 
+.toggle:checked + .slider {
+    background-color: var(--input-focus);
+}
+
+.toggle:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+#iconSwitchWrapper {
+    border: 2px solid black;
+    box-shadow: 4px 4px var(--main-color);
+}
+
+#iconSwitch{
+    background-color: #d1d1d1;
+    border: 2px solid #dedcdc;
+}
+
+.navTienda,
+.navJuegos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#navTiendaButton,
+#navJuegosButton {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.navIcon {
+    width: 100%;
+    transition: transform 0.1s ease-in-out;;
+}
+#navTiendaButton:hover .navIcon,
+#navJuegosButton:hover  .navIcon {
+    transform: scale(1.50);
+}
+
+#navTiendaButton:active .navIcon,
+#navJuegosButton:active  .navIcon {
+    transform: scale(0.9);
+}
