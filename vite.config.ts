@@ -8,16 +8,5 @@ export default defineConfig({
     plugins: [
         crx({ manifest }),
         react()
-    ],
-
-    build: {
-        rollupOptions: {
-            input: {
-                game: resolve(
-                    __dirname,
-                    "src/games/dino-yolk/dino-yolk.html"
-                ),
-            },
-        },
-    },
+    ]
 });

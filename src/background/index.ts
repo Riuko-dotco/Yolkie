@@ -52,7 +52,6 @@ async function init() {
         };
 
         await chrome.declarativeNetRequest.updateDynamicRules({
-            // @ts-ignore
             addRules: [rule]
         });
 
