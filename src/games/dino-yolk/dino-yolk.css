@@ -19,6 +19,7 @@ body {
 
 #canvas{
     background-color: rgba(20,20,20);
-
+    height: 100%;
+    width: 100%;
 }
 

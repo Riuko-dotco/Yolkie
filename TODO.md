@@ -52,7 +52,7 @@ These issues cause runtime crashes or prevent core features from working.
 
 **Files:** `src/popup/popup.js`, `src/games/games.js`
 **Problem:** These are `tsc` output committed alongside their `.ts` sources. They serve no purpose — Vite/CRXJS handles compilation during build. They also cause ESLint errors (19 lint errors in `popup.js` alone).
-**Fix:** Add `src/**/*.js` to `.gitignore`. Remove the `npm run popup` script if no longer needed.
+**Fix:** Add `src/**/*.js` to `.gitignore`. Remove the `npm run popuptsconfig.json` script if no longer needed.
 
 ### 2.2 Empty `mensaje-handler.ts`
 
@@ -111,6 +111,7 @@ These issues cause runtime crashes or prevent core features from working.
 **File:** `src/popup/popup.ts`
 **Problem:** One file handles background switching, theme toggle, menu toggle, keyboard arrows, and game card rendering. It runs on both `popup.html` and `games.html`, causing crashes on the latter (see 1.3).
 **Refactor:** Split into modules:
+
 - `popup/background.ts` — background cycling
 - `popup/theme.ts` — light/dark toggle
 - `popup/menu.ts` — options menu
@@ -122,6 +123,7 @@ These issues cause runtime crashes or prevent core features from working.
 **Files:** `src/background/index.ts`, `src/background/adblock-engine.ts`
 **Problem:** The two files have no import relationship. `adblock-engine.ts` detects suspicious URLs but never blocks them. `index.ts` has `addDynamicRule()` but nothing calls it. The intended flow (detect → store → display in popup → user blocks → addDynamicRule) is broken.
 **Refactor:** Design a clear pipeline:
+
 1. `adblock-engine.ts` records suspicious domains (current behavior, keep).
 2. Add a `chrome.runtime.onMessage` handler in `index.ts` that receives a "block-domain" message from the popup and calls `addDynamicRule()`.
 3. The popup fetches `suspiciousUrls` from storage and renders them as a list with Block/Whitelist buttons (the `yolkie-OptionsMenu.html` prototype was heading in this direction).
@@ -131,16 +133,17 @@ These issues cause runtime crashes or prevent core features from working.
 **Files:** `src/games/dino-yolk/**/*.ts`
 **Problem:** Jump velocity `-15`, gravity `0.8`, obstacle speed `5`, ground scroll speed `-5`, background scroll speed `-1`, sprite scale `1.25`, draw offset `30`, obstacle gaps `250-450`, max obstacles `5`, grace period `30` points, invincibility frames `60`, blink rate `4`, frame delay `8` — all hardcoded inline.
 **Refactor:** Extract into a single `GAME_CONFIG` constant or a config module:
+
 ```ts
 export const GAME_CONFIG = {
-    GRAVITY: 0.8,
-    JUMP_VELOCITY: -15,
-    OBSTACLE_SPEED: 5,
-    GROUND_SPEED: -5,
-    BACKGROUND_SPEED: -1,
-    SPRITE_SCALE: 1.25,
-    MAX_OBSTACLES: 5,
-    // ...
+  GRAVITY: 0.8,
+  JUMP_VELOCITY: -15,
+  OBSTACLE_SPEED: 5,
+  GROUND_SPEED: -5,
+  BACKGROUND_SPEED: -1,
+  SPRITE_SCALE: 1.25,
+  MAX_OBSTACLES: 5,
+  // ...
 } as const;
 ```
 
@@ -155,13 +158,14 @@ export const GAME_CONFIG = {
 **Files:** `src/games/dino-yolk/index.ts`, `obstacleSpawner.ts`
 **Problem:** Paths like `"src/games/dino-yolk/resources/yolkie/Yolkie1.png"` are scattered across multiple files. If the directory structure changes, every path must be updated manually.
 **Refactor:** Centralize all asset paths in a single `assets.ts` constants file:
+
 ```ts
 export const ASSETS = {
-    YOLKIE: {
-        RUN1: "src/games/dino-yolk/resources/yolkie/Yolkie1.png",
-        RUN2: "src/games/dino-yolk/resources/yolkie/Yolkie2.png",
-    },
-    // ...
+  YOLKIE: {
+    RUN1: "src/games/dino-yolk/resources/yolkie/Yolkie1.png",
+    RUN2: "src/games/dino-yolk/resources/yolkie/Yolkie2.png",
+  },
+  // ...
 } as const;
 ```
 
@@ -203,11 +207,12 @@ export const ASSETS = {
 
 **Files:** `src/popup/popup.ts`, `src/popup/popup.html`
 **Problem:**
+
 - `ToggleMenu` (PascalCase) vs `leftButton` (camelCase) for DOM elements
 - `rigthButton` / `rigthMoveScreen` (typo: should be `right`)
 - `ligthToggle` (typo: should be `light`)
 - `menuToogle` (typo: should be `menuToggle`)
-**Fix:** Rename all to consistent camelCase with correct spelling. Use find-and-replace across HTML `id` attributes and TS `getElementById` calls simultaneously.
+  **Fix:** Rename all to consistent camelCase with correct spelling. Use find-and-replace across HTML `id` attributes and TS `getElementById` calls simultaneously.
 
 ### 4.6 CSS class naming: Spanish/English mix
 
@@ -297,15 +302,17 @@ Show the user how many ads have been blocked. Store a counter in `chrome.storage
 ### 6.3 EXP & Coins System
 
 Tie the virtual pet to ad-blocking activity:
+
 - +10 EXP for every domain blocked
 - +5 coins for every domain blocked
 - Store `exp` and `coins` in `chrome.storage.local`
-- Level-up thresholds (e.g., level N requires N*100 EXP)
+- Level-up thresholds (e.g., level N requires N\*100 EXP)
 - Display Yolk's level, EXP bar, and coin count in the popup
 
 ### 6.4 Yolk Idle Animations
 
 Animate the Yolk mascot in the popup based on state:
+
 - Idle: Yolk pecks at the ground
 - Block: Yolk eats an ad (satisfying animation)
 - Level up: Yolk jumps and sparkles
@@ -315,6 +322,7 @@ This could be done with CSS animations or a small canvas in the popup.
 ### 6.5 Store / Upgrade System
 
 Use coins to buy cosmetic or functional upgrades:
+
 - Different Yolk skins
 - Background themes
 - Faster ad detection speed (gameplay buff)
@@ -322,6 +330,7 @@ Use coins to buy cosmetic or functional upgrades:
 ### 6.6 Difficulty Progression in Dino Yolk
 
 Currently difficulty is flat after the grace period. Add:
+
 - Obstacle speed increases every 100 points
 - Gap between obstacles shrinks over time
 - New obstacle types unlock at score milestones
@@ -334,6 +343,7 @@ The player has 3 HP but no visual indicator. Add a health bar or heart icons in 
 ### 6.8 Cross-Browser Compatibility Layer
 
 The project has `@types/firefox-webext-browser` but uses `chrome.*` APIs directly. For Firefox compatibility:
+
 - Use the `browser.*` namespace (Firefox) with a `chrome` polyfill
 - Or create a thin abstraction: `src/shared/browser.ts` that wraps `chrome`/`browser` calls
 - Test with `web-ext` for Firefox
@@ -341,6 +351,7 @@ The project has `@types/firefox-webext-browser` but uses `chrome.*` APIs directl
 ### 6.9 React Migration (when ready)
 
 The project already has React in dependencies. When migrating:
+
 - Use the [CRXJS React template](https://crxjs.dev/vite-plugin/concepts/frameworks) for popup
 - Keep the game as vanilla canvas (React adds overhead to game loops)
 - Consider Preact for the popup if bundle size matters
@@ -348,6 +359,7 @@ The project already has React in dependencies. When migrating:
 ### 6.10 Content Script for Script Blocking Layer
 
 The second onion layer (script blocking) needs a content script that:
+
 - Observes DOM mutations for injected `<script>` tags
 - Reports their `src` to the background via `chrome.runtime.sendMessage`
 - The background evaluates whether the script is suspicious and adds it to the blocklist
